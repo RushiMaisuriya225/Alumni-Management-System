@@ -27,11 +27,11 @@ const AlumniList = () => {
 
     useEffect(() => {
         if (alumniList.length > 0) {
+            const q = searchQuery.toLowerCase();
             const filteredlist = alumniList.filter(list =>
-                list.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                list.course.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                list.batch.toString().includes(searchQuery)
-                // list.batch.toString() === searchQuery
+                (list.name || '').toLowerCase().includes(q) ||
+                (list.course || '').toLowerCase().includes(q) ||
+                (list.batch != null ? list.batch.toString() : '').includes(searchQuery)
             );
             setFilteredAlumnni(filteredlist);
         }

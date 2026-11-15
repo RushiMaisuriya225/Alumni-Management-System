@@ -29,6 +29,11 @@ const User = sequelize.define('User', {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 0
+    },
+    auto_generated_pass: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+        defaultValue: ''
     }
 }, {
     tableName: 'users',

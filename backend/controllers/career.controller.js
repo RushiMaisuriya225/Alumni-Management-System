@@ -1,4 +1,14 @@
+import jwt from 'jsonwebtoken';
 import { Career, User } from '../models/Index.js';
+
+function resolveUserId(req) {
+  if (req.body && req.body.user_id) return req.body.user_id;
+  const token = req.cookies && req.cookies.token;
+  if (token) {
+    try { return jwt.verify(token, process.env.JWT_SECRET).id; } catch { /* ignore */ }
+  }
+  return 1; // fallback: admin
+}
 
 export async function listCareers(req, res, next) {
   try {
@@ -9,7 +19,7 @@ export async function listCareers(req, res, next) {
 
 export async function addCareer(req, res, next) {
   try {
-    const career = await Career.create(req.body);
+    const career = await Career.create({ ...req.body, user_id: resolveUserId(req) });
     res.status(201).json(career);
   } catch (err) { next(err); }
 }

@@ -1,11 +1,18 @@
 import bcrypt from 'bcrypt';
 import path from 'path';
-import { AlumnusBio, User } from '../models/Index.js';
+import { AlumnusBio, User, Course } from '../models/Index.js';
 
 export async function alumniList(req, res, next) {
   try {
-    const list = await AlumnusBio.findAll({ order: [['name', 'ASC']] });
-    res.json(list);
+    const list = await AlumnusBio.findAll({
+      include: { model: Course, as: 'course', attributes: ['course'] },
+      order: [['name', 'ASC']]
+    });
+    const result = list.map((a) => {
+      const j = a.toJSON();
+      return { ...j, course: j.course ? j.course.course : '' };
+    });
+    res.json(result);
   } catch (err) {
     next(err);
   }

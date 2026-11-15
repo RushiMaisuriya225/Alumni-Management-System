@@ -23,8 +23,18 @@ app.options('*', cors({ origin: CLIENT_ORIGINS, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+// Sanitize: strip empty-string `id` from bodies so inserts don't fail on PK
+app.use((req, res, next) => {
+  if (req.body && (req.body.id === '' || req.body.id === null || req.body.id === undefined)) {
+    delete req.body.id;
+  }
+  next();
+});
+
 // Static assets
-app.use('/api/admin/public', express.static(path.join(process.cwd(), 'Public')));
+const PUBLIC_DIR = path.join(process.cwd(), 'public');
+app.use('/api/admin/public', express.static(PUBLIC_DIR));
+app.use('/api/admin/Public', express.static(PUBLIC_DIR)); // legacy capitalized refs
 
 // API routes
 app.use('/auth', authRouter);

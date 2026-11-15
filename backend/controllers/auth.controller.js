@@ -33,10 +33,16 @@ export async function signup(req, res, next) {
     const hashed = await bcrypt.hash(password, 10);
     let user;
     if (userType === 'alumnus') {
-      const bio = await AlumnusBio.create({ name, email, course_id });
-      user = await User.create({ name, email, password: hashed, userType, alumnus_id: bio.id });
+      const bio = await AlumnusBio.create({
+        name, email, course_id,
+        gender: req.body.gender || '',
+        batch: req.body.batch || 0,
+        connected_to: req.body.connected_to || '',
+        avatar: req.body.avatar || ''
+      });
+      user = await User.create({ name, email, password: hashed, type: userType, alumnus_id: bio.id });
     } else {
-      user = await User.create({ name, email, password: hashed, userType });
+      user = await User.create({ name, email, password: hashed, type: userType });
     }
     // return legacy response
     res.json({ message: 'Signup Successful', userId: user.id, signupStatus: true });
