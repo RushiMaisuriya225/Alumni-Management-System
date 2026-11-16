@@ -2,8 +2,6 @@
 
 MERN-style stack: **React (Vite)** frontend + **Node/Express + Sequelize** backend + **MySQL** database.
 
-- Repo: https://github.com/ranajunaidhashim/Alumni-Management-System.git
-
 ---
 
 ## 1. Prerequisites
