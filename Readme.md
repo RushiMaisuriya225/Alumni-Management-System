@@ -262,5 +262,3 @@ GET /settings
 ---
 
 ## 📄 License
-
-[MIT](LICENSE) © Rana Junaid Hashim
